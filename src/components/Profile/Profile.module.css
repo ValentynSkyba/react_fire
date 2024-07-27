@@ -20,13 +20,20 @@
   }
 }
 
-img {
+.image {
   margin: 0 auto;
   overflow: hidden;
   height: 60%;
   width: 60%;
   border-radius: 50%;
   background-color: rgb(15, 14, 14);
+
+  transition: all 0.4s ease;
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(1.1);
+  }
 }
 
 .stats {
@@ -43,7 +50,7 @@ img {
   border-top: 3px solid black;
   grid-template-columns: 1fr 1fr 1fr;
 
-  li {
+  .stats_li {
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -53,10 +60,10 @@ img {
   }
 }
 
-li:first-child {
+.stats_li:first-child {
   border-right: 2px solid orange;
 }
 
-li:last-child {
+.stats_li:last-child {
   border-left: 2px solid orange;
 }
