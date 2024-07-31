@@ -1,35 +1,46 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from "react";
+import reactLogo from "./assets/react.svg";
+import viteLogo from "/vite.svg";
+import "./App.css";
+import Options from "./components/Options/Options";
+import Description from "./components/Description/Description";
+import Feedback from "./components/Feedback/Feedback";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const data = ["Good", "Neutral", "Bad"];
+  const defaultNumbers = {
+    Good: 0,
+    Neutral: 0,
+    Bad: 0,
+    Total: 0,
+    Positive: 0,
+  };
+
+  const [state, setState] = useState(() => {
+    const saveData = JSON.parse(window.localStorage.getItem("save-data"));
+    return saveData || defaultNumbers;
+  });
+
+  useEffect(() => {
+    window.localStorage.setItem("save-data", JSON.stringify(state));
+  }, [state]);
+  const handleVote = (value) => {
+    setState((prev) => ({
+      ...prev,
+      [value]: prev[value] + 1,
+      Total: prev.Total + 1,
+    }));
+  };
+
+  const totalPositive = Math.round((state.Good / state.Total) * 100);
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <Description />
+      <Options data={data} handleVote={handleVote} />
+      <Feedback state={state} setState={setState} positive={totalPositive} />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
