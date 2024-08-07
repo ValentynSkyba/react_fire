@@ -35,6 +35,12 @@ function App() {
 
   const filteredData = getFilteredContacts();
 
+  const sortData = () => {
+    setContacts((prev) =>
+      [...prev].sort((a, b) => a.name.localeCompare(b.name))
+    );
+  };
+
   const addContact = (data) => {
     const isExist = contacts.some(
       (item) => item.name === data.name && item.number === data.number
@@ -44,6 +50,7 @@ function App() {
       return;
     }
     setContacts((prev) => [data, ...prev]);
+    sortData();
     toast.success("Contact added");
   };
 
