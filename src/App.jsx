@@ -1,14 +1,25 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import "./App.css";
 import ContactForm from "./components/ContactForm/ContactForm";
 import SearchBox from "./components/SearchBox/SearchBox";
 import ContactList from "./components/ContactList/ContactList";
 import contactData from "./JSON/contacts.json";
+import { toast } from "react-toastify";
 
 function App() {
-  const [contacts, setContacts] = useState(contactData);
+  const [contacts, setContacts] = useState(() => {
+    const savedContacts = JSON.parse(window.localStorage.getItem("contacts"));
+    if (savedContacts?.length) {
+      return savedContacts;
+    }
+    return contactData;
+  });
   const [filter, setFilter] = useState("");
+
+  useEffect(() => {
+    window.localStorage.setItem("contacts", JSON.stringify(contacts));
+  }, [contacts]);
 
   const handleDelete = (id) => {
     setContacts((prev) => prev.filter((item) => item.id !== id));
@@ -25,8 +36,15 @@ function App() {
   const filteredData = getFilteredContacts();
 
   const addContact = (data) => {
-    console.log(data);
+    const isExist = contacts.some(
+      (item) => item.name === data.name && item.number === data.number
+    );
+    if (isExist) {
+      toast.error("Contact already exists");
+      return;
+    }
     setContacts((prev) => [data, ...prev]);
+    toast.success("Contact added");
   };
 
   return (
@@ -35,7 +53,11 @@ function App() {
         <h1>Phonebook</h1>
         <ContactForm addContact={addContact} />
         <SearchBox filter={filter} onFilter={setFilter} />
-        <ContactList contacts={filteredData} onDelete={handleDelete} />
+        <ContactList
+          filter={filter}
+          contacts={filteredData}
+          onDelete={handleDelete}
+        />
       </div>
     </>
   );
