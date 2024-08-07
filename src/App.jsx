@@ -13,13 +13,29 @@ function App() {
   const handleDelete = (id) => {
     setContacts((prev) => prev.filter((item) => item.id !== id));
   };
+
+  const getFilteredContacts = () => {
+    return contacts.filter(
+      (item) =>
+        item.name.toLowerCase().includes(filter.toLowerCase()) ||
+        item.number.includes(filter)
+    );
+  };
+
+  const filteredData = getFilteredContacts();
+
+  const addContact = (data) => {
+    console.log(data);
+    setContacts((prev) => [data, ...prev]);
+  };
+
   return (
     <>
       <div>
         <h1>Phonebook</h1>
-        <ContactForm />
-        <SearchBox />
-        <ContactList contacts={contacts} onDelete={handleDelete} />
+        <ContactForm addContact={addContact} />
+        <SearchBox filter={filter} onFilter={setFilter} />
+        <ContactList contacts={filteredData} onDelete={handleDelete} />
       </div>
     </>
   );
