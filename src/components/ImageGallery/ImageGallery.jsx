@@ -1,7 +1,14 @@
-import s from "./ImageGallery.module.css";
+import ImageCard from "../ImageCard/ImageCard";
+import s from "./ImageGellery.module.css";
 
-const ImageGallery = () => {
-  return <div></div>;
+const ImageGallery = ({ images }) => {
+  return (
+    <ul className={s.imageGallery}>
+      {images.map((image) => (
+        <ImageCard key={image.id} image={image} />
+      ))}
+    </ul>
+  );
 };
 
 export default ImageGallery;
