@@ -1,10 +1,10 @@
-import React from "react";
 import s from "./ContactForm.module.css";
 import { ErrorMessage, Field, Form, Formik } from "formik";
-import { nanoid } from "nanoid";
+import { useDispatch } from "react-redux";
 import * as Yap from "yup";
+import { addNewContact } from "../../redux/contactsSlice";
 
-const ContactForm = ({ addContact }) => {
+const ContactForm = () => {
   const addSchema = Yap.object().shape({
     name: Yap.string()
       .min(3, "Too short")
@@ -17,8 +17,11 @@ const ContactForm = ({ addContact }) => {
     name: "",
     number: "",
   };
+
+  const dispatch = useDispatch();
+
   const handleSubmit = (data, options) => {
-    addContact({ ...data, id: nanoid() });
+    dispatch(addNewContact(data));
     options.resetForm();
   };
 
