@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Save JSON Example</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+  </head>
+  <body>
+    <button onclick="saveJson()">Save JSON</button>
+
+    <script>
+      function saveJson() {
+        const friends = [
+          {
+            avatar: "https://cdn-icons-png.flaticon.com/512/1998/1998592.png",
+            name: "Mango",
+            isOnline: true,
+            id: 1812,
+          },
+          {
+            avatar: "https://cdn-icons-png.flaticon.com/512/616/616438.png",
+            name: "Kiwi",
+            isOnline: false,
+            id: 1137,
+          },
+          {
+            avatar: "https://cdn-icons-png.flaticon.com/512/1623/1623681.png",
+            name: "Ajax",
+            isOnline: true,
+            id: 1213,
+          },
+          {
+            avatar: "https://cdn-icons-png.flaticon.com/512/2977/2977285.png",
+            name: "Jay",
+            isOnline: true,
+            id: 1714,
+          },
+          {
+            avatar: "https://cdn-icons-png.flaticon.com/512/1998/1998749.png",
+            name: "Poly",
+            isOnline: false,
+            id: 1284,
+          },
+        ];
+
+        const jsonString = JSON.stringify(friends, null, 4);
+        const blob = new Blob([jsonString], { type: "application/json" });
+        saveAs(blob, "objects.json");
+      }
+    </script>
+  </body>
+</html>
